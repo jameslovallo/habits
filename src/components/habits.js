@@ -143,6 +143,12 @@ customElements.define(
 				margin: 0;
 				padding: 0.5rem;
 			}
+			li {
+				align-items: center;
+				display: flex;
+				gap: 0.5rem;
+				padding-left: 0.5rem;
+			}
 			[part="habit"] {
 				align-items: center;
 				border: 1px solid #5555;
