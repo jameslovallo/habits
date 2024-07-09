@@ -1,0 +1,160 @@
+* {
+	box-sizing: border-box;
+}
+
+:root,
+body {
+	min-height: 100%;
+}
+
+:root {
+	--blue-50: #e3f2fd;
+	--blue-300: #64b5f6;
+	--blue-accent-700: #0091ea;
+	--blue-grey-50: #eceff1;
+	--blue-grey-100: #cfd8dc;
+	--green-50: #e8f5e9;
+	--green-300: #81c784;
+	--green-accent-700: #00c853;
+	--grey-400: #bdbdbd;
+	--red-50: #ffebee;
+	--red-300: #e57373;
+	--red-accent-700: #d50000;
+	background: var(--blue-grey-50);
+	color-scheme: dark;
+	background: url(/src/wallpapers/kaleidohope.png) no-repeat center center /
+		cover;
+	background-attachment: fixed;
+	font-family: sans-serif;
+}
+
+body {
+	margin: 0;
+}
+
+nav {
+	display: flex;
+	filter: drop-shadow(1px 1px 1px black);
+	padding: 0.5rem;
+
+	a {
+		align-items: center;
+		color: inherit;
+		display: flex;
+		gap: 0.5rem;
+		padding: 0.5rem;
+		text-decoration: none;
+
+		&:first-of-type {
+			margin-right: auto;
+		}
+
+		&:hover {
+			background: #0008;
+			border-radius: 3rem;
+		}
+	}
+}
+
+main {
+	display: grid;
+	gap: 1rem;
+	margin: auto;
+	max-width: 60ch;
+	padding: 1rem;
+}
+
+h1 {
+	margin: 0;
+}
+
+p {
+	line-height: 1.5;
+}
+
+*::part(card) {
+	background: var(--card-bg, white);
+	border-radius: var(--card-radius, 1.25rem);
+	box-shadow: var(--card-shadow, 0 1px 2px #8888);
+}
+
+*::part(button) {
+	background: transparent;
+	border: none;
+	border-radius: 0.75rem;
+	cursor: pointer;
+	margin-left: auto;
+	padding: 0.5rem;
+}
+
+*::part(button):hover {
+	background: #5555;
+}
+
+*::part(text-input) {
+	background: var(--blue-grey-50);
+	border: 1px solid var(--blue-grey-100);
+	font: inherit;
+	padding: 0.5rem;
+	border-radius: var(--card-child-radius, 0.5rem);
+}
+
+*::part(text-input):hover,
+*::part(text-input):focus {
+	background: var(--blue-50);
+}
+
+*::part(text-input):focus-visible {
+	outline: none;
+}
+
+mdi-icon:not(:defined) {
+	border: 2px solid transparent;
+	border-radius: 50%;
+	box-shadow: inset 0 0 0 2px currentColor;
+	display: block;
+	height: 24px;
+	width: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+	nav {
+		filter: drop-shadow(1px 1px 1px black);
+	}
+
+	nav a:hover {
+		background: #0008;
+	}
+
+	main {
+		text-shadow: 1px 1px 2px black;
+	}
+
+	*::part(card) {
+		--card-bg: #131517;
+		--card-bg: #000b;
+		--card-shadow: none;
+		backdrop-filter: blur(5px);
+		border: 1px solid #555;
+		text-shadow: none;
+	}
+
+	*::part(text-input) {
+		color: white;
+		background: transparent;
+		border: 1px solid #555;
+	}
+
+	*::part(text-input)::placeholder {
+		color: #bbb;
+	}
+
+	*::part(text-input):hover,
+	*::part(text-input):focus {
+		background: #5555;
+	}
+
+	*::part(text-input):focus-visible {
+		outline: 2px solid white;
+	}
+}
