@@ -29,6 +29,14 @@ create('habit-list', {
 					.sort((a, b) => (a.fields.Name > b.fields.Name ? 1 : -1))
 					.map(({ id, fields: { Icon, Name, Link, NumPerDay, DoneToday } }) => {
 						const done = DoneToday === NumPerDay
+						let icon
+						if (done) {
+							icon = 'check'
+						} else if (DoneToday === 0) {
+							icon = 'circle'
+						} else if (DoneToday < NumPerDay) {
+							icon = 'checkProgress'
+						}
 						return html`
 							<li>
 								<div part="content">
@@ -52,7 +60,7 @@ create('habit-list', {
 										updateRecord({ table, id, fields: { DoneToday }, callback })
 									}}
 								>
-									<mdi-icon name=${done ? 'check' : 'circle'}></mdi-icon>
+									<mdi-icon name=${icon}></mdi-icon>
 								</button>
 							</li>
 						`
@@ -111,13 +119,14 @@ create('habit-list', {
 			background: var(--soft-bg);
 		}
 		mdi-icon {
-			pointer-events: none;
-		}
-		[name='circle'] {
 			color: var(--grey-400);
+			pointer-events: none;
 		}
 		[name='check'] {
 			color: var(--green-300);
+		}
+		[name='checkProgress'] {
+			color: var(--yellow-300);
 		}
 	`,
 })

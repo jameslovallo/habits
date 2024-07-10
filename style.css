@@ -8,12 +8,13 @@ body {
 }
 
 :root {
+	--soft-bg: #5555;
+	--soft-border: #444;
 	--blue-300: #64b5f6;
 	--green-300: #81c784;
 	--grey-400: #bdbdbd;
 	--red-300: #e57373;
-	--soft-bg: #5555;
-	--soft-border: #444;
+	--yellow-300: #ffb74d;
 	color-scheme: dark;
 	background: linear-gradient(-45deg, #0008, #0000),
 		url(/src/images/kaleidohope.png) no-repeat center center / cover;
