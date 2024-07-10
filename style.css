@@ -71,6 +71,7 @@ p {
 	border-radius: var(--card-radius, 1.25rem);
 	display: grid;
 	gap: 0.5rem;
+	padding: 0.5rem;
 }
 
 *::part(button) {
@@ -78,7 +79,6 @@ p {
 	border: none;
 	border-radius: 0.75rem;
 	cursor: pointer;
-	margin-left: auto;
 	padding: 0.5rem;
 }
 
@@ -92,6 +92,7 @@ p {
 	border: 1px solid var(--soft-border);
 	color: white;
 	font: inherit;
+	margin: 0.5rem;
 	padding: 0.5rem;
 }
 

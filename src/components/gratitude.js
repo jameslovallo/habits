@@ -1,8 +1,8 @@
 import { addRecord, date, deleteRecord, getRecords } from '../api.js'
 import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev@1.0.29'
-const table = 'Gratitude'
 
+const table = 'Gratitude'
 const heading = await t('Gratitude')
 const placeholder = await t('What are you grateful for?')
 
@@ -10,7 +10,7 @@ const getList = async () => {
 	const records = await getRecords({ table })
 	records.forEach(({ id, fields: { Date } }, i) => {
 		if (Date !== date()) {
-			gratitude.splice(i, 1)
+			records.splice(i, 1)
 			deleteRecord({ table, id })
 		}
 	})
@@ -50,12 +50,12 @@ create('gratitude-list', {
 									${Name}
 									<button
 										part="button"
-										@click="${() =>
+										@click=${() =>
 											deleteRecord({
 												table,
 												id,
 												callback: () => this.connectedCallback(),
-											})}"
+											})}
 									>
 										<mdi-icon name="trash"></mdi-icon>
 									</button>
@@ -67,17 +67,10 @@ create('gratitude-list', {
 		`
 	},
 	styles: css`
-		[part='card'] {
-			display: grid;
-			padding: 0.5rem;
-		}
-		[part='text-input'] {
-			margin: 0.5rem;
-		}
 		ul {
 			list-style: none;
 			margin: 0;
-			padding: 0;
+			padding: 0 0 0 0.5rem;
 		}
 		[data-count='0'] {
 			display: none;
@@ -86,15 +79,7 @@ create('gratitude-list', {
 			align-items: center;
 			display: flex;
 			gap: 0.5rem;
-			padding-left: 0.5rem;
-		}
-		@keyframes spin {
-			to {
-				transform: rotate(-360deg);
-			}
-		}
-		[name='sync'] {
-			animation: spin 2s linear infinite;
+			justify-content: space-between;
 		}
 		[part='button'] {
 			color: var(--red-300);
