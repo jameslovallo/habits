@@ -159,16 +159,21 @@ customElements.define(
 				border-radius: var(--card-child-radius, 0.75rem);
 				display: grid;
 				grid-template-columns: 1fr auto;
-				overflow: hidden;
 			}
 			[part="habit-link"] {
 				align-items: center;
+				border-bottom-left-radius: 0.75rem;
+				border-top-left-radius: 0.75rem;
 				color: var(--grey-400);
 				display: grid;
 				gap: 0.5rem;
 				grid-template-columns: 2.75rem 1fr;
 				padding: 0.5rem;
 				text-decoration: none;
+			}
+			[part="habit-link"]:hover,
+			[part="habit-link"]:focus {
+				background: var(--soft-bg);
 			}
 			img {
 				aspect-ratio: 1;
@@ -186,6 +191,8 @@ customElements.define(
 				align-items: center;
 				background: none;
 				border: none;
+				border-bottom-right-radius: 0.75rem;
+				border-top-right-radius: 0.75rem;
 				color: var(--grey-400);
 				cursor: pointer;
 				display: flex;

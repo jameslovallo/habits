@@ -99,6 +99,7 @@ customElements.define(
 						<option>messaging</option>
 						<option>mobile</option>
 						<option>music</option>
+						<option>plants</option>
 						<option>profile</option>
 						<option>programming</option>
 						<option>shopping</option>
@@ -116,6 +117,9 @@ customElements.define(
 				</div>
 
 				<style>
+					* {
+						box-sizing: border-box;
+					}
 					h2 {
 						margin-top: 3rem;
 						text-transform: capitalize;
