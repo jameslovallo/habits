@@ -23,8 +23,8 @@ export const getTable = (options) => {
 		.then((r) => r.tables.find((t) => t.name === table))
 }
 
-export const addRecord = (options, callback) => {
-	const { base, table, fields } = { ...defaults, ...options }
+export const addRecord = (options) => {
+	const { base, table, fields, callback } = { ...defaults, ...options }
 	fetch([api, base, table].join('/'), {
 		method: 'POST',
 		headers: {
@@ -34,21 +34,21 @@ export const addRecord = (options, callback) => {
 		body: JSON.stringify({ fields }),
 	})
 		.then((r) => r.json())
-		.then((r) => callback(r))
+		.then((r) => callback && callback(r))
 }
 
-export const deleteRecord = (options, callback) => {
-	const { base, table, id } = { ...defaults, ...options }
+export const deleteRecord = (options) => {
+	const { base, table, id, callback } = { ...defaults, ...options }
 	fetch([api, base, table, id].join('/'), {
 		method: 'DELETE',
 		headers: { Authorization: `Bearer ${token}` },
 	})
 		.then((r) => r.json())
-		.then((r) => callback(r))
+		.then((r) => callback && callback(r))
 }
 
-export const updateRecord = (options, callback) => {
-	const { base, table, fields, id } = { ...defaults, ...options }
+export const updateRecord = (options) => {
+	const { base, table, fields, id, callback } = { ...defaults, ...options }
 	fetch([api, base, table, id].join('/'), {
 		method: 'PATCH',
 		headers: {
@@ -58,7 +58,7 @@ export const updateRecord = (options, callback) => {
 		body: JSON.stringify({ fields }),
 	})
 		.then((r) => r.json())
-		.then((r) => callback(r))
+		.then((r) => callback && callback(r))
 }
 
 export const date = (d = new Date()) => {

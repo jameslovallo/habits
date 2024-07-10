@@ -1,3 +1,4 @@
+import { t } from './i18n.js'
 import '/src/components/gratitude.js'
 import '/src/components/habits.js'
 import '/src/components/icon.js'
@@ -14,7 +15,7 @@ if (timeOfDay < 12) {
 	timeOfDay = 'Evening'
 }
 
-h1.innerText = `Good ${timeOfDay}, James`
+h1.innerText = await t(`Good ${timeOfDay}, James`)
 
 const p = document.querySelector('p')
 const getRandom = (min, max) => {
@@ -27,7 +28,7 @@ fetch(
 	'https://raw.githubusercontent.com/BennettElisa/black-women-inspire/main/quotes.json'
 )
 	.then((res) => res.json())
-	.then((json) => {
+	.then(async (json) => {
 		const { quote, author } = json[getRandom(0, json.length - 1)]
-		p.innerHTML = `${quote} - ${author}`
+		p.innerHTML = `${await t(quote)} - ${author}`
 	})
