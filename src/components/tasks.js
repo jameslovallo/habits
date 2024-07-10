@@ -80,13 +80,11 @@ create('task-list', {
 			justify-content: space-between;
 		}
 		mdi-icon {
+			color: var(--grey-400);
 			pointer-events: none;
 		}
 		[name='moon'] {
 			color: var(--blue-300);
-		}
-		[name='circle'] {
-			color: var(--grey-400);
 		}
 		[name='check'] {
 			color: var(--green-300);
