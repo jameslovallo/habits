@@ -58,7 +58,7 @@ nav a:hover {
 main {
 	display: grid;
 	gap: 1rem;
-	margin: auto;
+	margin: 1rem auto 3rem;
 	max-width: 70ch;
 	padding: 1rem;
 }
