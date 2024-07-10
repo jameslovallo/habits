@@ -32,9 +32,9 @@ customElements.define(
 							fields: { Name, Icon, NumPerDay, DoneToday, Link, LinkClicked },
 						}) => /* html */ `
 							<li part="habit">
-								<a href="/edit-habit?id=${id}" part="habit-link">
+								<a href="/edit-habit.html?id=${id}" part="habit-link">
 									<img src="${Icon}">
-									<div>
+									<div part="text">
 										<div part="name">${Name}</div>
 										<small part="details">
 											Today: ${DoneToday} / ${NumPerDay}
@@ -111,14 +111,14 @@ customElements.define(
 		html = /* html */ `
 			<div part="heading">
 				<h2>Habits</h2>
-				<a href="/edit-habit" part="button" title="Add habit">
+				<a href="/edit-habit.html" part="button" title="Add habit">
 					<mdi-icon name="plus"></mdi-icon>
 				</a>
 			</div>
 			<ul part="card">
-				<li>
-					Loading habits
+				<li style="padding: 0.5rem">
 					<mdi-icon name="sync"></mdi-icon>
+					Loading habits
 				</li>
 			</ul>
 		`
@@ -147,11 +147,17 @@ customElements.define(
 				align-items: center;
 				display: flex;
 				gap: 0.5rem;
-				padding-left: 0.5rem;
+			}
+			@keyframes spin {
+				to { transform: rotate(-360deg) }
+			}
+			[name="sync"] {
+				animation: spin 2s linear infinite;
+				transform: rotate(0deg);
 			}
 			[part="habit"] {
 				align-items: center;
-				border: 1px solid #5555;
+				border: 1px solid #555;
 				border-radius: var(--card-child-radius, 0.75rem);
 				display: grid;
 				grid-template-columns: 1fr auto;
@@ -171,11 +177,12 @@ customElements.define(
 				max-width: 100%;
 			}
 			[part="name"] {
-				font-size: 14px;
+				color: #eee;
 			}
 			[part="details"] {
 				color: var(--grey-400);
 				font-size: 12px;
+				margin-top: 0.25rem;
 			}
 			[part="action"] {
 				align-items: center;
