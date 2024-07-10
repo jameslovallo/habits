@@ -140,7 +140,7 @@ customElements.define(
 						width: 2.25rem;
 					}
 					[part="button"] {
-						border: 1px solid #555 !important;
+						border: 1px solid var(--soft-border) !important;
 						font: inherit;
 						line-height: 1.5rem;
 						margin-left: 0 !important;
@@ -157,8 +157,8 @@ customElements.define(
 						gap: 1rem;
 					}
 					select {
-						background: #5555;
-						border: 1px solid #555;
+						background: var(--soft-bg);
+						border: 1px solid var(--soft-border);
 						border-radius: 0.5rem;
 						padding: 0.5rem;
 					}

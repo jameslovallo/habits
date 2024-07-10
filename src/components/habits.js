@@ -156,7 +156,7 @@ customElements.define(
 			}
 			[part="habit"] {
 				align-items: center;
-				border: 1px solid #555;
+				border: 1px solid var(--soft-border);
 				border-radius: var(--card-child-radius, 0.75rem);
 				display: grid;
 				grid-template-columns: 1fr auto;
@@ -195,7 +195,7 @@ customElements.define(
 			}
 			[part="action"]:hover,
 			[part="action"]:focus {
-				background: #5555;
+				background: var(--soft-bg);
 			}
 			[name="check"] {
 				color: var(--green-300);
