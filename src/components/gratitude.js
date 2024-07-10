@@ -100,7 +100,6 @@ customElements.define(
 			}
 			[name="sync"] {
 				animation: spin 2s linear infinite;
-				transform: rotate(0deg);
 			}
 			[part="button"] {
 				color: var(--red-300);

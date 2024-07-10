@@ -116,7 +116,6 @@ customElements.define(
 			}
 			[name="sync"] {
 				animation: spin 2s linear infinite;
-				transform: rotate(0deg);
 			}
 			button:hover {
 				background: var(--button-bg-hover);

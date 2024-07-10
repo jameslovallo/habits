@@ -152,7 +152,6 @@ customElements.define(
 			}
 			[name="sync"] {
 				animation: spin 2s linear infinite;
-				transform: rotate(0deg);
 			}
 			[part="habit"] {
 				align-items: center;
