@@ -130,7 +130,6 @@ customElements.define(
 			[part="heading"] {
 				align-items: center;
 				display: flex;
-				justify-content: space-between;
 			}
 			[part="button"] {
 				color: white;
