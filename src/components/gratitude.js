@@ -79,7 +79,7 @@ create('gratitude-list', {
 			margin: 0;
 			padding: 0;
 		}
-		ul:empty {
+		[data-count='0'] {
 			display: none;
 		}
 		li {
