@@ -1,211 +1,123 @@
 import { date, getRecords, updateRecord } from '../api.js'
+import { t } from '../i18n.js'
+import { create, css, html } from '//unpkg.com/cuick-dev@1.0.29'
 
 const table = 'Habits'
+const heading = await t('Habits')
+const today = await t('Today')
 
-customElements.define(
-	'habit-list',
-	class extends HTMLElement {
-		constructor() {
-			const root = super().attachShadow({ mode: 'open' })
-			root.innerHTML = `${this.html}<style>${this.css}</style>`
-			this.renderList()
+const getList = async () => {
+	const records = await getRecords({ table })
+	records.forEach(({ id, fields: { LastUpdated } }, i) => {
+		if (LastUpdated !== date()) {
+			habits[i].fields.LastUpdated = date()
+			habits[i].fields.LinkClicked = false
+			habits[i].fields.DoneToday = 0
+			updateRecord({ table, id, fields: habits[i].fields })
 		}
+	})
+	return records
+}
 
-		async renderList() {
-			const habits = await getRecords({ table })
-			if (habits) {
-				habits.forEach(({ id, fields: { LastUpdated } }, i) => {
-					if (LastUpdated !== date()) {
-						habits[i].fields.LastUpdated = date()
-						habits[i].fields.LinkClicked = false
-						habits[i].fields.DoneToday = 0
-						updateRecord({ table, id, fields: habits[i].fields })
-					}
-				})
-				this.list = this.shadowRoot.querySelector('ul')
-				this.list.innerHTML = habits
-					.filter(({ fields: { Name } }) => !!Name)
+create('habit-list', {
+	async template() {
+		const habits = await getList()
+		return html`
+			<h2>${heading}</h2>
+			<ul part="card">
+				${habits
 					.sort((a, b) => (a.fields.Name > b.fields.Name ? 1 : -1))
-					.map(
-						({
-							id,
-							fields: { Name, Icon, NumPerDay, DoneToday, Link, LinkClicked },
-						}) => /* html */ `
-							<li part="habit">
-								<a href="/edit-habit.html?id=${id}" part="habit-link">
-									<img src="${Icon}">
-									<div part="text">
-										<div part="name">${Name}</div>
-										<small part="details">
-											Today: ${DoneToday} / ${NumPerDay}
-										</small>
-									</div>
-								</a>
-								${
-									Link && !LinkClicked
-										? /* html */ `
-											<a href="${Link}" part="action" data-id="${id}" target="_blank">
-												<mdi-icon name="open"></mdi-icon>
-											</a>
-										`
-										: /* html */ `
-											<button
-												part="action"
-												data-id="${id}"
-												data-num="${NumPerDay}"
-												data-done="${DoneToday}"
-											>
-												<mdi-icon
-													name="${DoneToday === NumPerDay ? 'check' : 'circle'}"
-												></mdi-icon>
-											</button>
-										`
-								}
+					.map(({ id, fields: { Icon, Name, Link, NumPerDay, DoneToday } }) => {
+						const done = DoneToday === NumPerDay
+						return html`
+							<li>
+								<div part="content">
+									${Link
+										? html`
+												<a href=${Link} target="_blank">
+													<img src=${Icon} />
+												</a>
+										  `
+										: html`<img src=${Icon} />`}
+									<a part="text" href=${`/edit-habit.html?id=${id}`}>
+										${Name}
+										<small>${today}: ${DoneToday}/${NumPerDay}</small>
+									</a>
+								</div>
+								<button
+									part="action"
+									@click=${() => {
+										DoneToday = done ? 0 : DoneToday + 1
+										const callback = () => this.connectedCallback()
+										updateRecord({ table, id, fields: { DoneToday }, callback })
+									}}
+								>
+									<mdi-icon name=${done ? 'check' : 'circle'}></mdi-icon>
+								</button>
 							</li>
 						`
-					)
-					.join('')
-			}
-
-			this.list.querySelectorAll('button').forEach((button) => {
-				button.addEventListener('click', ({ target }) => {
-					let { id, num, done } = target.dataset
-					num = Number(num)
-					done = Number(done)
-					if (done < num) {
-						updateRecord(
-							{
-								table,
-								id,
-								fields: { DoneToday: Number(done) + 1 },
-							},
-							() => this.renderList()
-						)
-					} else {
-						updateRecord(
-							{
-								table,
-								id,
-								fields: { DoneToday: 0, LinkClicked: false },
-							},
-							() => this.renderList()
-						)
-					}
-				})
-			})
-
-			this.list.querySelectorAll('a').forEach((a) => {
-				a.addEventListener('click', ({ target }) => {
-					updateRecord(
-						{
-							table,
-							id: target.dataset.id,
-							fields: { LinkClicked: true },
-						},
-						() => this.renderList()
-					)
-				})
-			})
-		}
-
-		html = /* html */ `
-			<div part="heading">
-				<h2>Habits</h2>
-				<a href="/edit-habit.html" part="button" title="Add habit">
-					<mdi-icon name="plus"></mdi-icon>
-				</a>
-			</div>
-			<ul part="card">
-				<li style="padding: 0.5rem">
-					<mdi-icon name="sync"></mdi-icon>
-					Loading habits
-				</li>
+					})}
 			</ul>
 		`
-
-		css = /* css */ `
-			* {
-				box-sizing: border-box;
-			}
-			[part="heading"] {
-				align-items: center;
-				display: flex;
-			}
-			[part="button"] {
-				color: white;
-			}
-			ul {
-				display: grid;
-				gap: 0.5rem;
-				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-				list-style: none;
-				margin: 0;
-				padding: 0.5rem;
-			}
-			li {
-				align-items: center;
-				display: flex;
-				gap: 0.5rem;
-			}
-			@keyframes spin {
-				to { transform: rotate(-360deg) }
-			}
-			[name="sync"] {
-				animation: spin 2s linear infinite;
-			}
-			[part="habit"] {
-				align-items: center;
-				border: 1px solid var(--soft-border);
-				border-radius: var(--card-child-radius, 0.75rem);
-				display: grid;
-				grid-template-columns: 1fr auto;
-			}
-			[part="habit-link"] {
-				align-items: center;
-				border-bottom-left-radius: 0.75rem;
-				border-top-left-radius: 0.75rem;
-				color: var(--grey-400);
-				display: grid;
-				gap: 0.5rem;
-				grid-template-columns: 2.75rem 1fr;
-				padding: 0.5rem;
-				text-decoration: none;
-			}
-			[part="habit-link"]:hover,
-			[part="habit-link"]:focus {
-				background: var(--soft-bg);
-			}
-			img {
-				aspect-ratio: 1;
-				max-width: 100%;
-			}
-			[part="name"] {
-				color: #eee;
-			}
-			[part="details"] {
-				color: var(--grey-400);
-				font-size: 12px;
-				margin-top: 0.25rem;
-			}
-			[part="action"] {
-				align-items: center;
-				background: none;
-				border: none;
-				border-bottom-right-radius: 0.75rem;
-				border-top-right-radius: 0.75rem;
-				color: var(--grey-400);
-				cursor: pointer;
-				display: flex;
-				height: 100%;
-				padding: 0.5rem;
-			}
-			[part="action"]:hover,
-			[part="action"]:focus {
-				background: var(--soft-bg);
-			}
-			[name="check"] {
-				color: var(--green-300);
-			}
-		`
-	}
-)
+	},
+	styles: css`
+		ul {
+			display: grid;
+			gap: 0.5rem;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			list-style: none;
+			margin: 0;
+			padding: 0 0 0 0.5rem;
+		}
+		li {
+			align-items: center;
+			border: 1px solid var(--soft-border);
+			border-radius: 0.75rem;
+			display: flex;
+			justify-content: space-between;
+		}
+		[part='content'] {
+			align-items: center;
+			color: inherit;
+			display: grid;
+			flex-grow: 1;
+			grid-template-columns: 2.75rem 1fr;
+			gap: 0.5rem;
+			padding: 0.5rem;
+			text-decoration: none;
+		}
+		[part='text'] {
+			color: inherit;
+			display: grid;
+			gap: 0.25rem;
+			text-decoration: none;
+		}
+		small {
+			color: var(--grey-400);
+			font-family: monospace;
+			font-size: 0.75rem;
+		}
+		[part='action'] {
+			align-items: center;
+			background: transparent;
+			border: none;
+			border-top-right-radius: 0.75rem;
+			border-bottom-right-radius: 0.75rem;
+			display: flex;
+			height: 100%;
+			padding: 0.5rem;
+		}
+		button:hover {
+			background: var(--soft-bg);
+		}
+		mdi-icon {
+			pointer-events: none;
+		}
+		[name='circle'] {
+			color: var(--grey-400);
+		}
+		[name='check'] {
+			color: var(--green-300);
+		}
+	`,
+})

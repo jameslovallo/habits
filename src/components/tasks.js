@@ -3,7 +3,6 @@ import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev@1.0.29'
 
 const table = 'Tasks'
-
 const heading = await t('Tasks')
 const placeholder = await t('What do you need to do?')
 
