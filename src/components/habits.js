@@ -31,7 +31,9 @@ create('habit-list', {
 			</header>
 			<ul part="card">
 				${habits
-					.sort((a, b) => (a.fields.Name > b.fields.Name ? 1 : -1))
+					.sort((a, b) =>
+						a.fields.Name.toLowerCase() > b.fields.Name.toLowerCase() ? 1 : -1
+					)
 					.map(({ id, fields: { Icon, Name, Link, NumPerDay, DoneToday } }) => {
 						const done = DoneToday === NumPerDay
 						let icon
