@@ -16,7 +16,7 @@ body {
 	--soft-border: #444;
 	color-scheme: dark;
 	background: linear-gradient(-45deg, #0008, #0000),
-		url(/src/wallpapers/kaleidohope.png) no-repeat center center / cover;
+		url(/src/images/kaleidohope.png) no-repeat center center / cover;
 	background-attachment: fixed;
 	font-family: sans-serif;
 }
