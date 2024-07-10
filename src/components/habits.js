@@ -23,7 +23,12 @@ create('habit-list', {
 	async template() {
 		const habits = await getList()
 		return html`
-			<h2>${heading}</h2>
+			<header>
+				<h2>${heading}</h2>
+				<a href="/edit-habit.html" part="button">
+					<mdi-icon name="plus"></mdi-icon>
+				</a>
+			</header>
 			<ul part="card">
 				${habits
 					.sort((a, b) => (a.fields.Name > b.fields.Name ? 1 : -1))
@@ -69,6 +74,15 @@ create('habit-list', {
 		`
 	},
 	styles: css`
+		header {
+			align-items: center;
+			display: flex;
+			justify-content: space-between;
+		}
+		header [part='button'],
+		header mdi-icon {
+			color: inherit;
+		}
 		ul {
 			display: grid;
 			gap: 0.5rem;
