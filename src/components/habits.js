@@ -10,10 +10,10 @@ const getList = async () => {
 	const records = await getRecords({ table })
 	records.forEach(({ id, fields: { LastUpdated } }, i) => {
 		if (LastUpdated !== date()) {
-			habits[i].fields.LastUpdated = date()
-			habits[i].fields.LinkClicked = false
-			habits[i].fields.DoneToday = 0
-			updateRecord({ table, id, fields: habits[i].fields })
+			records[i].fields.LastUpdated = date()
+			records[i].fields.LinkClicked = false
+			records[i].fields.DoneToday = 0
+			updateRecord({ table, id, fields: records[i].fields })
 		}
 	})
 	return records
