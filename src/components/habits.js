@@ -11,7 +11,6 @@ const getList = async () => {
 	records.forEach(({ id, fields: { LastUpdated } }, i) => {
 		if (LastUpdated !== date()) {
 			records[i].fields.LastUpdated = date()
-			records[i].fields.LinkClicked = false
 			records[i].fields.DoneToday = 0
 			updateRecord({ table, id, fields: records[i].fields })
 		}
