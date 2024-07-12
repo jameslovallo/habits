@@ -1,6 +1,6 @@
 import { date, getRecords, updateRecord } from '../api.js'
 import { t } from '../i18n.js'
-import { create, css, html } from '//unpkg.com/cuick-dev@1.0.29'
+import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Habits'
 const heading = await t('Habits')

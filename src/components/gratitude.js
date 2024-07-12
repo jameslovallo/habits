@@ -1,6 +1,6 @@
 import { addRecord, date, deleteRecord, getRecords } from '../api.js'
 import { t } from '../i18n.js'
-import { create, css, html } from '//unpkg.com/cuick-dev@1.0.29'
+import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Gratitude'
 const heading = await t('Gratitude')
