@@ -86,6 +86,9 @@ create('edit-habit', {
 		</div>
 	`,
 	styles: css`
+		* {
+			box-sizing: border-box;
+		}
 		form {
 			display: grid;
 			gap: 1.5rem;
@@ -103,6 +106,7 @@ create('edit-habit', {
 		}
 		input[part='text-input'] {
 			margin: 0 !important;
+			width: 100%;
 		}
 		img {
 			height: 2rem;
