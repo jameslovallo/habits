@@ -8,10 +8,10 @@ const today = await t('Today')
 
 const getList = async () => {
 	const records = await getRecords({ table })
-	records.forEach(({ id, fields: { LastUpdated } }, i) => {
+	records.forEach(({ id, fields: { LastUpdated, Negative } }, i) => {
 		if (LastUpdated !== date()) {
 			records[i].fields.LastUpdated = date()
-			records[i].fields.DoneToday = 0
+			records[i].fields.DoneToday = Negative ? 1 : 0
 			updateRecord({ table, id, fields: records[i].fields })
 		}
 	})
@@ -33,44 +33,54 @@ create('habit-list', {
 					.sort((a, b) =>
 						a.fields.Name.toLowerCase() > b.fields.Name.toLowerCase() ? 1 : -1
 					)
-					.map(({ id, fields: { Icon, Name, Link, NumPerDay, DoneToday } }) => {
-						const done = DoneToday === NumPerDay
-						let icon
-						if (done) {
-							icon = 'check'
-						} else if (DoneToday === 0) {
-							icon = 'circle'
-						} else if (DoneToday < NumPerDay) {
-							icon = 'checkProgress'
+					.map(
+						({
+							id,
+							fields: { Icon, Name, Link, NumPerDay, DoneToday, Negative },
+						}) => {
+							const done = DoneToday === NumPerDay
+							let icon
+							if (done) {
+								icon = 'check'
+							} else if (DoneToday === 0) {
+								icon = Negative ? 'cancel' : 'circle'
+							} else if (DoneToday < NumPerDay) {
+								icon = 'checkProgress'
+							}
+							return html`
+								<li>
+									<div part="content">
+										${Link
+											? html`
+													<a href=${Link} target="_blank">
+														<img src=${Icon} />
+													</a>
+											  `
+											: html`<img src=${Icon} />`}
+										<a part="text" href=${`/edit-habit.html?id=${id}`}>
+											${Name}
+											<small>${today}: ${DoneToday}/${NumPerDay}</small>
+										</a>
+									</div>
+									<button
+										part="action"
+										@click=${() => {
+											DoneToday = done ? 0 : DoneToday + 1
+											const callback = () => this.connectedCallback()
+											updateRecord({
+												table,
+												id,
+												fields: { DoneToday },
+												callback,
+											})
+										}}
+									>
+										<mdi-icon name=${icon}></mdi-icon>
+									</button>
+								</li>
+							`
 						}
-						return html`
-							<li>
-								<div part="content">
-									${Link
-										? html`
-												<a href=${Link} target="_blank">
-													<img src=${Icon} />
-												</a>
-										  `
-										: html`<img src=${Icon} />`}
-									<a part="text" href=${`/edit-habit.html?id=${id}`}>
-										${Name}
-										<small>${today}: ${DoneToday}/${NumPerDay}</small>
-									</a>
-								</div>
-								<button
-									part="action"
-									@click=${() => {
-										DoneToday = done ? 0 : DoneToday + 1
-										const callback = () => this.connectedCallback()
-										updateRecord({ table, id, fields: { DoneToday }, callback })
-									}}
-								>
-									<mdi-icon name=${icon}></mdi-icon>
-								</button>
-							</li>
-						`
-					})}
+					)}
 			</ul>
 		`
 	},
@@ -142,6 +152,9 @@ create('habit-list', {
 		}
 		[name='checkProgress'] {
 			color: var(--yellow-300);
+		}
+		[name='cancel'] {
+			color: var(--red-300);
 		}
 	`,
 })
