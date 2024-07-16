@@ -30,6 +30,7 @@ create('edit-habit', {
 					id
 						? updateRecord({ table, id, fields, callback })
 						: addRecord({ table, fields, callback })
+					app.changePage('home', 0)
 				}}
 			>
 				<label>

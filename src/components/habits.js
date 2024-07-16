@@ -3,7 +3,6 @@ import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Habits'
-const heading = await t('Habits')
 const today = await t('Today')
 
 const getList = async () => {
@@ -22,12 +21,6 @@ create('habit-list', {
 	async template() {
 		const habits = await getList()
 		return html`
-			<header>
-				<h2>${heading}</h2>
-				<a href="/edit-habit.html" part="button">
-					<mdi-icon name="plus"></mdi-icon>
-				</a>
-			</header>
 			<ul part="card">
 				${habits
 					.sort((a, b) =>
@@ -85,15 +78,6 @@ create('habit-list', {
 		`
 	},
 	styles: css`
-		header {
-			align-items: center;
-			display: flex;
-			justify-content: space-between;
-		}
-		header [part='button'],
-		header mdi-icon {
-			color: inherit;
-		}
 		ul {
 			display: grid;
 			gap: 0.5rem;

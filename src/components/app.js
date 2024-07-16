@@ -27,57 +27,81 @@ const getRandom = (min, max) => {
 
 const { quote, author } = quotes[getRandom(0, quotes.length - 1)]
 
-create('c-app', {
+create('app', {
 	$page: 'home',
 	setup({ shadowRoot, $page }) {
-		this.changePage = (page, number) => {
+		this.changePage = (page) => {
 			const main = shadowRoot.querySelector('main')
-			$page.value = page
-			main.scrollTo({
-				left: main.clientWidth * number,
-				behavior: 'smooth',
+			const pages = [...shadowRoot.querySelectorAll('[data-page]')]
+			const currentPage = pages.find((el) => el.dataset.page === $page.value)
+			const newPage = pages.find((el) => el.dataset.page === page)
+			pages.forEach((page) => {
+				if (page === currentPage || page === newPage) {
+					page.style.display = 'block'
+				} else {
+					page.style.display = 'none'
+					page.inert = true
+				}
 			})
+			main.scrollTo({ top: 0, left: newPage.offsetLeft, behavior: 'smooth' })
+			newPage.inert = false
+			$page.value = page
 		}
 	},
-	template: async ({ $page, changePage }) => html`
+	template: async ({ changePage }) => html`
 		<nav>
 			<a
 				@click=${(e) => {
 					e.preventDefault()
-					changePage('home', 0)
+					changePage('home')
 				}}
 			>
 				<mdi-icon name="user"></mdi-icon>
-				${t('My Day')}
+				${await t('My Day')}
 			</a>
 			<a
 				@click=${(e) => {
 					e.preventDefault()
-					changePage('friends', 1)
+					changePage('friends')
 				}}
 			>
 				<mdi-icon name="group"></mdi-icon>
-				${t('Friends')}
+				${await t('Friends')}
 			</a>
 			<a
 				@click=${(e) => {
 					e.preventDefault()
-					changePage('settings', 2)
+					changePage('settings')
 				}}
 			>
 				<mdi-icon name="cog"></mdi-icon>
-				${t('Settings')}
+				${await t('Settings')}
 			</a>
 		</nav>
 		<main>
-			<div data-page="home" ?inert=${$page.value !== 'home'}>
+			<div data-page="home">
 				<h1>${await t(`Good ${timeOfDay}, ${Name}`)}</h1>
 				<p>${await t(quote)} - ${author}</p>
+				<header>
+					<h2>${await t('Habits')}</h2>
+					<button @click=${() => changePage('edit-habit')}>
+						<mdi-icon name="plus"></mdi-icon>
+					</button>
+				</header>
 				<habit-list></habit-list>
+				<header>
+					<h2>${await t('Tasks')}</h2>
+				</header>
 				<task-list></task-list>
+				<header>
+					<h2>${await t('Gratitude')}</h2>
+				</header>
 				<gratitude-list></gratitude-list>
 			</div>
-			<div data-page="settings" ?inert=${$page.value !== 'settings'}>
+			<div data-page="edit-habit">
+				<edit-habit></edit-habit>
+			</div>
+			<div data-page="settings">
 				<h1>${await t('Settings')}</h1>
 			</div>
 		</main>
@@ -103,7 +127,8 @@ create('c-app', {
 			margin-right: auto;
 		}
 
-		nav a:hover {
+		nav a:hover,
+		header button:hover {
 			background: #0008;
 			border-radius: 3rem;
 		}
@@ -111,20 +136,35 @@ create('c-app', {
 		main {
 			display: flex;
 			scroll-snap-type: x mandatory;
-			overflow-x: auto;
+			overflow-x: hidden;
 		}
 
 		main > div {
 			min-width: 100%;
-			padding: 3rem max(calc((100vw - 70ch) / 2), 1rem);
+			padding: 0 max(calc((100vw - 70ch) / 2), 1rem);
+			scroll-snap-align: start;
 		}
 
-		h1 {
+		h2 {
 			margin: 0;
 		}
 
 		p {
 			line-height: 1.75;
+		}
+
+		header {
+			align-items: center;
+			display: flex;
+			justify-content: space-between;
+			margin: 3rem 0 1rem;
+		}
+
+		header button {
+			background: transparent;
+			border: none;
+			cursor: pointer;
+			padding: 0.25rem;
 		}
 
 		*::part(card) {
@@ -133,7 +173,6 @@ create('c-app', {
 			border-radius: var(--card-radius, 1.25rem);
 			display: grid;
 			gap: 0.5rem;
-			margin-bottom: 3rem;
 			padding: 0.5rem;
 		}
 

@@ -21,7 +21,6 @@ create('gratitude-list', {
 	async template() {
 		const records = await getList()
 		return html`
-			<h2>${heading}</h2>
 			<div part="card">
 				<input
 					part="text-input"

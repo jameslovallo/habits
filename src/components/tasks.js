@@ -39,7 +39,6 @@ create('task-list', {
 				})
 		}
 		return html`
-			<h2>${heading}</h2>
 			<div part="card">
 				<input
 					part="text-input"

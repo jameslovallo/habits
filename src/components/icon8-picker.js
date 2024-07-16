@@ -1,8 +1,6 @@
 import { default as merge } from 'https://esm.sh/deepmerge'
 import { categories } from '../data/icons8.js'
 import { t } from '../i18n.js'
-import './c-intersect.js'
-import './c-translate.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 console.log(categories)
@@ -25,7 +23,7 @@ const fetchIcons = async (category = 'alphabet', offset = 0) => {
 }
 
 create('icon8-picker', {
-	_editor: 'edit-habit',
+	// _editor: 'edit-habit',
 	category: 'alphabet',
 	setup() {
 		this.icons = []
