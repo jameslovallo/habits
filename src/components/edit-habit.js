@@ -26,7 +26,6 @@ create('edit-habit', {
 		}
 		return html`
 			<h1>${await t(id ? 'Edit Habit' : 'Add Habit')}</h1>
-
 			<div part="card">
 				<form
 					@submit=${(e) => {
