@@ -153,6 +153,10 @@ create('app', {
 			scroll-snap-align: start;
 		}
 
+		h1 {
+			margin: 3rem 0 1rem;
+		}
+
 		h2 {
 			margin: 0;
 		}

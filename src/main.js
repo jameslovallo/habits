@@ -7,5 +7,3 @@ import '/src/components/icon8-picker.js'
 import '/src/components/intersect.js'
 import '/src/components/tasks.js'
 import '/src/components/translate.js'
-
-window.app = document.querySelector('c-app')

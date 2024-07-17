@@ -6,11 +6,12 @@ const table = 'Habits'
 const addImageIcon = 'https://img.icons8.com/?size=100&id=11816&format=png'
 
 create('edit-habit', {
+	_app: 'c-app',
 	record: '',
 	name: '',
 	link: '',
 	icon: addImageIcon,
-	async template({ record: id, icon, name, link }) {
+	async template({ record: id, icon, name, link, _app }) {
 		let habit = {}
 		if (id) {
 			const habits = await getRecords({ table, id })
@@ -31,7 +32,7 @@ create('edit-habit', {
 						e.preventDefault()
 						const fields = Object.fromEntries(new FormData(e.target).entries())
 						fields.NumPerDay = Number(fields.NumPerDay)
-						const callback = () => (location.href = '/')
+						const callback = () => _app.changePage('home')
 						id
 							? updateRecord({ table, id, fields, callback })
 							: addRecord({ table, fields, callback })
@@ -79,7 +80,7 @@ create('edit-habit', {
 									<button
 										part="button"
 										@click=${() => {
-											const callback = () => (location.href = '/')
+											const callback = () => _app.changePage('home')
 											deleteRecord({ table, id, callback })
 										}}
 									>
