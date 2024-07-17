@@ -50,7 +50,6 @@ create('app', {
 		}
 	},
 	async template({ changePage, record }) {
-		console.log(record)
 		return html`
 			<nav>
 				<a
