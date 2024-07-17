@@ -95,15 +95,15 @@ create('app', {
 							<mdi-icon name="plus"></mdi-icon>
 						</button>
 					</header>
-					<habit-list></habit-list>
+					<c-habit></c-habit>
 					<header>
 						<h2>${await t('Tasks')}</h2>
 					</header>
-					<task-list></task-list>
+					<c-tasks></c-tasks>
 					<header>
 						<h2>${await t('Gratitude')}</h2>
 					</header>
-					<gratitude-list></gratitude-list>
+					<c-gratitude></c-gratitude>
 				</div>
 				<div data-page="edit-habit">
 					<edit-habit record=${record}></edit-habit>

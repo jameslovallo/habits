@@ -3,7 +3,6 @@ import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Gratitude'
-const heading = await t('Gratitude')
 const placeholder = await t('What are you grateful for?')
 
 const getList = async () => {
@@ -17,7 +16,7 @@ const getList = async () => {
 	return records
 }
 
-create('gratitude-list', {
+create('gratitude', {
 	async template() {
 		const records = await getList()
 		return html`

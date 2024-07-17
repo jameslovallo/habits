@@ -17,7 +17,7 @@ const getList = async () => {
 	return records
 }
 
-create('habit-list', {
+create('habit', {
 	_app: 'c-app',
 	async template({ _app }) {
 		const habits = await getList()

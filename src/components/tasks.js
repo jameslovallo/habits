@@ -6,7 +6,7 @@ const table = 'Tasks'
 const heading = await t('Tasks')
 const placeholder = await t('What do you need to do?')
 
-create('task-list', {
+create('tasks', {
 	async template() {
 		const records = await getRecords({ table })
 		const items = (status) => {
