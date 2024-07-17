@@ -1,6 +1,5 @@
 import { default as merge } from 'https://esm.sh/deepmerge'
 import { categories } from '../data/icons8.js'
-import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const fetchIcons = async (category = 'alphabet', offset = 0) => {
@@ -21,7 +20,6 @@ const fetchIcons = async (category = 'alphabet', offset = 0) => {
 }
 
 create('icon8-picker', {
-	// _editor: 'edit-habit',
 	category: 'alphabet',
 	setup() {
 		this.icons = []
@@ -38,47 +36,43 @@ create('icon8-picker', {
 	},
 	async template() {
 		return html`
-			<h2>${await t('Browse Icons')}</h2>
-			<div part="card">
-				<select
-					@change=${({ target }) => {
-						this.category = target.value
-						this.icons = []
-						this.offset = 0
-						this.fetchIcons()
-					}}
-				>
-					${categories.map((c) => html`<option>${c}</option>`)}
-				</select>
-				<div part="categories">
-					${this.icons.map((subcategory) => {
-						const { name, icons } = subcategory
-						return html`
-							<h3><c-translate>${name}</c-translate></h3>
-							<ul part="icons">
-								${icons.map(({ id }) => {
-									const url = `https://img.icons8.com/?size=128&id=${id}&format=png`
-									return html`
-										<li>
-											<button
-												part="button"
-												@click=${() => (this._editor.icon = url)}
-											>
-												<img src=${url} />
-											</button>
-										</li>
-									`
-								})}
-							</ul>
-						`
-					})}
-				</div>
-			</div>
-			<c-intersect
-				@intersect=${() => {
+			<select
+				@change=${({ target }) => {
+					this.category = target.value
+					this.icons = []
+					this.offset = 0
 					this.fetchIcons()
 				}}
-			/>
+			>
+				${categories.map((c) => html`<option>${c}</option>`)}
+			</select>
+			<div part="categories">
+				${this.icons.map((subcategory) => {
+					const { name, icons } = subcategory
+					return html`
+						<h3><c-translate>${name}</c-translate></h3>
+						<ul part="icons">
+							${icons.map(({ id }) => {
+								const url = `https://img.icons8.com/?size=128&id=${id}&format=png`
+								return html`
+									<li>
+										<button
+											@click=${() => {
+												this.dispatchEvent(
+													new CustomEvent('select', { detail: url })
+												)
+											}}
+										>
+											<img src=${url} />
+										</button>
+									</li>
+								`
+							})}
+						</ul>
+					`
+				})}
+				<c-intersect @intersect=${() => this.fetchIcons()} />
+			</div>
 		`
 	},
 	styles: css`
@@ -103,7 +97,8 @@ create('icon8-picker', {
 			padding: 0;
 		}
 		[part='icons'] button {
-			border: 1px solid var(--soft-border);
+			background: none;
+			border: none;
 			border-radius: 0.5rem;
 			padding: 0.25rem;
 		}

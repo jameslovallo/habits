@@ -7,22 +7,21 @@ const addImageIcon = 'https://img.icons8.com/?size=100&id=11816&format=png'
 
 create('edit-habit', {
 	record: '',
-	$name: '',
-	$link: '',
-	$icon: addImageIcon,
-	template: async ({ record: id, $icon, $name, $link }) => {
+	name: '',
+	link: '',
+	icon: addImageIcon,
+	async template({ record: id, icon, name, link }) {
 		let habit = {}
 		if (id) {
 			const habits = await getRecords({ table, id })
 			habit = habits.find((x) => x.id === id).fields
 			const { Icon, Name, Link } = habit
-			if (Icon) $icon.v = Icon
-			if (Name) $name.v = Name
-			if (Link) $link.v = Link
+			if (Icon) this.icon = Icon
+			if (Name) this.name = Name
+			if (Link) this.link = Link
 		} else {
-			$icon.v = addImageIcon
-			$name.v = ''
-			$link.v = ''
+			name = ''
+			link = ''
 		}
 		return html`
 			<h1>${await t(id ? 'Edit Habit' : 'Add Habit')}</h1>
@@ -41,7 +40,7 @@ create('edit-habit', {
 				>
 					<label>
 						${await t('Name')}
-						<input part="text-input" name="Name" value=${$name.v} />
+						<input part="text-input" name="Name" value=${name} />
 					</label>
 					<div class="row">
 						<label>
@@ -56,18 +55,18 @@ create('edit-habit', {
 						</label>
 						<label style="flex-grow: 1">
 							${await t('Link')}
-							<input part="text-input" name="Link" value=${$name.v} />
+							<input part="text-input" name="Link" value=${name} />
 						</label>
 					</div>
 					<label>
 						${await t('Icon')}
 						<div class="row">
-							<img src=${$icon.v} />
+							<img src=${icon} />
 							<input
 								style="flex-grow: 1"
 								part="text-input"
 								name="Icon"
-								value=${$icon.v}
+								value=${icon}
 							/>
 						</div>
 					</label>
@@ -91,6 +90,11 @@ create('edit-habit', {
 					</div>
 				</form>
 			</div>
+			<h2>${await t('Browse Icons')}</h2>
+			<icon8-picker
+				part="card"
+				@select=${(e) => (this.icon = e.detail)}
+			></icon8-picker>
 		`
 	},
 	styles: css`
@@ -126,6 +130,9 @@ create('edit-habit', {
 		}
 		[name='trash'] {
 			color: var(--red-300);
+		}
+		h2 {
+			margin-top: 3rem;
 		}
 	`,
 })
