@@ -3,8 +3,6 @@ import { categories } from '../data/icons8.js'
 import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
-console.log(categories)
-
 const fetchIcons = async (category = 'alphabet', offset = 0) => {
 	const url = 'https://api-icons.icons8.com'
 	const endpoint = '/siteApi/icons/packs/demarcation'

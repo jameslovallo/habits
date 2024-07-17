@@ -18,7 +18,8 @@ const getList = async () => {
 }
 
 create('habit-list', {
-	async template() {
+	_app: 'c-app',
+	async template({ _app }) {
 		const habits = await getList()
 		return html`
 			<ul part="card">
@@ -50,7 +51,13 @@ create('habit-list', {
 													</a>
 											  `
 											: html`<img src=${Icon} />`}
-										<a part="text" href=${`/edit-habit.html?id=${id}`}>
+										<a
+											part="text"
+											@click=${() => {
+												_app.record = id
+												_app.changePage('edit-habit')
+											}}
+										>
 											${Name}
 											<small>${today}: ${DoneToday}/${NumPerDay}</small>
 										</a>

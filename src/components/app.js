@@ -29,11 +29,12 @@ const { quote, author } = quotes[getRandom(0, quotes.length - 1)]
 
 create('app', {
 	$page: 'home',
+	record: '',
 	setup({ shadowRoot, $page }) {
 		this.changePage = (page) => {
 			const main = shadowRoot.querySelector('main')
 			const pages = [...shadowRoot.querySelectorAll('[data-page]')]
-			const currentPage = pages.find((el) => el.dataset.page === $page.value)
+			const currentPage = pages.find((el) => el.dataset.page === $page.v)
 			const newPage = pages.find((el) => el.dataset.page === page)
 			pages.forEach((page) => {
 				if (page === currentPage || page === newPage) {
@@ -45,67 +46,75 @@ create('app', {
 			})
 			main.scrollTo({ top: 0, left: newPage.offsetLeft, behavior: 'smooth' })
 			newPage.inert = false
-			$page.value = page
+			$page.v = page
 		}
 	},
-	template: async ({ changePage }) => html`
-		<nav>
-			<a
-				@click=${(e) => {
-					e.preventDefault()
-					changePage('home')
-				}}
-			>
-				<mdi-icon name="user"></mdi-icon>
-				${await t('My Day')}
-			</a>
-			<a
-				@click=${(e) => {
-					e.preventDefault()
-					changePage('friends')
-				}}
-			>
-				<mdi-icon name="group"></mdi-icon>
-				${await t('Friends')}
-			</a>
-			<a
-				@click=${(e) => {
-					e.preventDefault()
-					changePage('settings')
-				}}
-			>
-				<mdi-icon name="cog"></mdi-icon>
-				${await t('Settings')}
-			</a>
-		</nav>
-		<main>
-			<div data-page="home">
-				<h1>${await t(`Good ${timeOfDay}, ${Name}`)}</h1>
-				<p>${await t(quote)} - ${author}</p>
-				<header>
-					<h2>${await t('Habits')}</h2>
-					<button @click=${() => changePage('edit-habit')}>
-						<mdi-icon name="plus"></mdi-icon>
-					</button>
-				</header>
-				<habit-list></habit-list>
-				<header>
-					<h2>${await t('Tasks')}</h2>
-				</header>
-				<task-list></task-list>
-				<header>
-					<h2>${await t('Gratitude')}</h2>
-				</header>
-				<gratitude-list></gratitude-list>
-			</div>
-			<div data-page="edit-habit">
-				<edit-habit></edit-habit>
-			</div>
-			<div data-page="settings">
-				<h1>${await t('Settings')}</h1>
-			</div>
-		</main>
-	`,
+	async template({ changePage, record }) {
+		console.log(record)
+		return html`
+			<nav>
+				<a
+					@click=${(e) => {
+						e.preventDefault()
+						changePage('home')
+					}}
+				>
+					<mdi-icon name="user"></mdi-icon>
+					${await t('My Day')}
+				</a>
+				<a
+					@click=${(e) => {
+						e.preventDefault()
+						changePage('friends')
+					}}
+				>
+					<mdi-icon name="group"></mdi-icon>
+					${await t('Friends')}
+				</a>
+				<a
+					@click=${(e) => {
+						e.preventDefault()
+						changePage('settings')
+					}}
+				>
+					<mdi-icon name="cog"></mdi-icon>
+					${await t('Settings')}
+				</a>
+			</nav>
+			<main>
+				<div data-page="home">
+					<h1>${await t(`Good ${timeOfDay}, ${Name}`)}</h1>
+					<p>${await t(quote)} - ${author}</p>
+					<header>
+						<h2>${await t('Habits')}</h2>
+						<button
+							@click=${() => {
+								this.record = ''
+								changePage('edit-habit')
+							}}
+						>
+							<mdi-icon name="plus"></mdi-icon>
+						</button>
+					</header>
+					<habit-list></habit-list>
+					<header>
+						<h2>${await t('Tasks')}</h2>
+					</header>
+					<task-list></task-list>
+					<header>
+						<h2>${await t('Gratitude')}</h2>
+					</header>
+					<gratitude-list></gratitude-list>
+				</div>
+				<div data-page="edit-habit">
+					<edit-habit record=${record}></edit-habit>
+				</div>
+				<div data-page="settings">
+					<h1>${await t('Settings')}</h1>
+				</div>
+			</main>
+		`
+	},
 	styles: css`
 		nav {
 			display: flex;
