@@ -56,7 +56,7 @@ create('edit-habit', {
 						</label>
 						<label style="flex-grow: 1">
 							${await t('Link')}
-							<input part="text-input" name="Link" value=${name} />
+							<input part="text-input" name="Link" value=${link} />
 						</label>
 					</div>
 					<label>
