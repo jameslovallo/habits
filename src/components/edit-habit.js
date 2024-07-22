@@ -8,9 +8,9 @@ const addImageIcon = 'https://img.icons8.com/?size=100&id=11816&format=png'
 create('edit-habit', {
 	_app: 'c-app',
 	record: '',
-	icon: addImageIcon,
+	icon: '',
 	async template({ record, icon }) {
-		this.habit = {}
+		this.habit = { Icon: addImageIcon }
 		if (record) {
 			const habits = await getRecords({ table, record })
 			this.habit = habits.find((x) => x.id === record).fields
@@ -28,7 +28,7 @@ create('edit-habit', {
 						e.preventDefault()
 						const fields = Object.fromEntries(new FormData(e.target).entries())
 						fields.NumPerDay = Number(fields.NumPerDay)
-						id
+						id && fields.Name
 							? updateRecord({ table, id, fields, callback })
 							: addRecord({ table, fields, callback })
 					}}
@@ -56,12 +56,12 @@ create('edit-habit', {
 					<label>
 						${await t('Icon')}
 						<div class="row">
-							<img src=${Icon || addImageIcon} />
+							<img src=${icon || Icon} />
 							<input
 								style="flex-grow: 1"
 								part="text-input"
 								name="Icon"
-								value=${Icon || addImageIcon}
+								value=${icon || Icon}
 							/>
 						</div>
 					</label>
