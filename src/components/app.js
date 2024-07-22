@@ -55,6 +55,7 @@ create('app', {
 				<a
 					@click=${(e) => {
 						e.preventDefault()
+						this.record = ''
 						changePage('home')
 					}}
 				>
@@ -106,7 +107,7 @@ create('app', {
 					<c-gratitude></c-gratitude>
 				</div>
 				<div data-page="edit-habit">
-					<edit-habit record=${record}></edit-habit>
+					${record ? html`<edit-habit record=${record}></edit-habit>` : ''}
 				</div>
 				<div data-page="settings">
 					<h1>${await t('Settings')}</h1>

@@ -8,21 +8,17 @@ const addImageIcon = 'https://img.icons8.com/?size=100&id=11816&format=png'
 create('edit-habit', {
 	_app: 'c-app',
 	record: '',
-	name: '',
-	link: '',
 	icon: addImageIcon,
-	async template({ record: id, icon, name, link, _app }) {
-		let habit = {}
-		if (id) {
-			const habits = await getRecords({ table, id })
-			habit = habits.find((x) => x.id === id).fields
-			const { Icon, Name, Link } = habit
-			if (Icon) this.icon = Icon
-			if (Name) this.name = Name
-			if (Link) this.link = Link
-		} else {
-			name = ''
-			link = ''
+	async template({ record }) {
+		this.habit = {}
+		if (record) {
+			const habits = await getRecords({ table, record })
+			this.habit = habits.find((x) => x.id === record).fields
+		}
+		const { id, Name, Icon, Link, NumPerDay } = this.habit
+		const callback = () => {
+			_app.changePage('home')
+			_app.record = ''
 		}
 		return html`
 			<h1>${await t(id ? 'Edit Habit' : 'Add Habit')}</h1>
@@ -32,7 +28,6 @@ create('edit-habit', {
 						e.preventDefault()
 						const fields = Object.fromEntries(new FormData(e.target).entries())
 						fields.NumPerDay = Number(fields.NumPerDay)
-						const callback = () => _app.changePage('home')
 						id
 							? updateRecord({ table, id, fields, callback })
 							: addRecord({ table, fields, callback })
@@ -41,7 +36,7 @@ create('edit-habit', {
 				>
 					<label>
 						${await t('Name')}
-						<input part="text-input" name="Name" value=${name} />
+						<input part="text-input" name="Name" value=${Name} />
 					</label>
 					<div class="row">
 						<label>
@@ -51,23 +46,23 @@ create('edit-habit', {
 								name="NumPerDay"
 								type="number"
 								min="1"
-								value=${habit.NumPerDay || 1}
+								value=${NumPerDay || 1}
 							/>
 						</label>
 						<label style="flex-grow: 1">
 							${await t('Link')}
-							<input part="text-input" name="Link" value=${link} />
+							<input part="text-input" name="Link" value=${Link} />
 						</label>
 					</div>
 					<label>
 						${await t('Icon')}
 						<div class="row">
-							<img src=${icon} />
+							<img src=${Icon} />
 							<input
 								style="flex-grow: 1"
 								part="text-input"
 								name="Icon"
-								value=${icon}
+								value=${Icon}
 							/>
 						</div>
 					</label>
@@ -80,7 +75,6 @@ create('edit-habit', {
 									<button
 										part="button"
 										@click=${() => {
-											const callback = () => _app.changePage('home')
 											deleteRecord({ table, id, callback })
 										}}
 									>
