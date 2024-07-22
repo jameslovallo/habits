@@ -51,7 +51,7 @@ create('habit', {
 													</a>
 											  `
 											: html`<img src=${Icon} />`}
-										<a
+										<button
 											part="text"
 											@click=${() => {
 												_app.record = id
@@ -60,7 +60,7 @@ create('habit', {
 										>
 											${Name}
 											<small>${today}: ${DoneToday}/${NumPerDay}</small>
-										</a>
+										</button>
 									</div>
 									<button
 										part="action"
@@ -111,10 +111,12 @@ create('habit', {
 			text-decoration: none;
 		}
 		[part='text'] {
+			background: transparent;
+			border: none;
 			color: inherit;
 			display: grid;
 			gap: 0.25rem;
-			text-decoration: none;
+			text-align: left;
 		}
 		small {
 			color: var(--grey-400);
@@ -131,7 +133,7 @@ create('habit', {
 			height: 100%;
 			padding: 0.5rem;
 		}
-		button:hover {
+		[part='action']:hover {
 			background: var(--soft-bg);
 		}
 		mdi-icon {

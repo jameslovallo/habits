@@ -9,7 +9,7 @@ create('edit-habit', {
 	_app: 'c-app',
 	record: '',
 	icon: '',
-	async template({ record, icon }) {
+	async template({ record, icon, _app }) {
 		this.habit = { Icon: addImageIcon }
 		if (record) {
 			const habits = await getRecords({ table, record })
@@ -69,12 +69,13 @@ create('edit-habit', {
 						<button part="button" type="submit" style="flex-grow: 1">
 							${await t('Save')}
 						</button>
-						${id
+						${record
 							? html`
 									<button
 										part="button"
-										@click=${() => {
-											deleteRecord({ table, id, callback })
+										@click=${(e) => {
+											e.preventDefault()
+											deleteRecord({ table, id: record, callback })
 										}}
 									>
 										<mdi-icon name="trash"></mdi-icon>
