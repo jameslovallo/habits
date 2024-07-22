@@ -9,7 +9,7 @@ create('edit-habit', {
 	_app: 'c-app',
 	record: '',
 	icon: addImageIcon,
-	async template({ record }) {
+	async template({ record, icon }) {
 		this.habit = {}
 		if (record) {
 			const habits = await getRecords({ table, record })
@@ -31,7 +31,6 @@ create('edit-habit', {
 						id
 							? updateRecord({ table, id, fields, callback })
 							: addRecord({ table, fields, callback })
-						app.changePage('home', 0)
 					}}
 				>
 					<label>
@@ -57,12 +56,12 @@ create('edit-habit', {
 					<label>
 						${await t('Icon')}
 						<div class="row">
-							<img src=${Icon} />
+							<img src=${Icon || addImageIcon} />
 							<input
 								style="flex-grow: 1"
 								part="text-input"
 								name="Icon"
-								value=${Icon}
+								value=${Icon || addImageIcon}
 							/>
 						</div>
 					</label>

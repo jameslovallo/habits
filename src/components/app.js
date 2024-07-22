@@ -90,7 +90,7 @@ create('app', {
 						<button
 							@click=${() => {
 								this.record = ''
-								changePage('edit-habit')
+								setTimeout(() => changePage('edit-habit'))
 							}}
 						>
 							<mdi-icon name="plus"></mdi-icon>
@@ -107,7 +107,7 @@ create('app', {
 					<c-gratitude></c-gratitude>
 				</div>
 				<div data-page="edit-habit">
-					${record ? html`<edit-habit record=${record}></edit-habit>` : ''}
+					<edit-habit record=${record}></edit-habit>
 				</div>
 				<div data-page="settings">
 					<h1>${await t('Settings')}</h1>
