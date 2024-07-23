@@ -55,7 +55,7 @@ create('habit', {
 											part="text"
 											@click=${() => {
 												_app.record = id
-												_app.page = 'edit-habit'
+												setTimeout(() => (_app.page = 'edit-habit'))
 											}}
 										>
 											${Name}
