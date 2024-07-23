@@ -56,7 +56,7 @@ create('app', {
 								<button
 									@click=${() => {
 										this.record = ''
-										this.page = 'edit-habit'
+										setTimeout(() => (this.page = 'edit-habit'))
 									}}
 								>
 									<mdi-icon name="plus"></mdi-icon>
