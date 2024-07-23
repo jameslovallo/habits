@@ -1,5 +1,4 @@
 import { addRecord, deleteRecord, getRecords, updateRecord } from '../api.js'
-import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev@1.0.29'
 
 const table = 'Habits'
@@ -21,7 +20,7 @@ create('edit-habit', {
 			_app.record = ''
 		}
 		return html`
-			<h1>${await t(id ? 'Edit Habit' : 'Add Habit')}</h1>
+			<h1><c-t>${id ? 'Edit Habit' : 'Add Habit'}</c-t></h1>
 			<div part="card">
 				<form
 					@submit=${(e) => {
@@ -34,12 +33,12 @@ create('edit-habit', {
 					}}
 				>
 					<label>
-						${await t('Name')}
+						<c-t>Name</c-t>
 						<input part="text-input" name="Name" value=${Name} />
 					</label>
 					<div class="row">
 						<label>
-							${await t('Times per day')}
+							<c-t>Time per day</c-t>
 							<input
 								part="text-input"
 								name="NumPerDay"
@@ -49,12 +48,12 @@ create('edit-habit', {
 							/>
 						</label>
 						<label style="flex-grow: 1">
-							${await t('Link')}
+							<c-t>Link</c-t>
 							<input part="text-input" name="Link" value=${Link} />
 						</label>
 					</div>
 					<label>
-						${await t('Icon')}
+						<c-t>Icon</c-t>
 						<div class="row">
 							<img src=${icon || Icon} />
 							<input
@@ -67,7 +66,7 @@ create('edit-habit', {
 					</label>
 					<div class="row">
 						<button part="button" type="submit" style="flex-grow: 1">
-							${await t('Save')}
+							<c-t>Save</c-t>
 						</button>
 						${record
 							? html`
@@ -78,18 +77,15 @@ create('edit-habit', {
 											deleteRecord({ table, id: record, callback })
 										}}
 									>
-										<mdi-icon name="trash"></mdi-icon>
+										<c-icon name="trash" />
 									</button>
 							  `
 							: ''}
 					</div>
 				</form>
 			</div>
-			<h2>${await t('Browse Icons')}</h2>
-			<icon8-picker
-				part="card"
-				@select=${(e) => (this.icon = e.detail)}
-			></icon8-picker>
+			<h2><c-t>Browse Icons</c-t></h2>
+			<icon8-picker part="card" @select=${(e) => (this.icon = e.detail)} />
 		`
 	},
 	styles: css`

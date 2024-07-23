@@ -50,7 +50,7 @@ create('icon8-picker', {
 				${this.icons.map((subcategory) => {
 					const { name, icons } = subcategory
 					return html`
-						<h3><c-translate>${name}</c-translate></h3>
+						<h3><c-t>${name}</c-t></h3>
 						<ul part="icons">
 							${icons.map(({ id }) => {
 								const url = `https://img.icons8.com/?size=128&id=${id}&format=png`

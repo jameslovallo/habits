@@ -1,9 +1,8 @@
 import { addRecord, deleteRecord, getRecords, updateRecord } from '../api.js'
-import { t } from '../i18n.js'
+import { t } from './translate.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Tasks'
-const placeholder = await t('What do you need to do?')
 
 create('tasks', {
 	async template() {
@@ -30,8 +29,8 @@ create('tasks', {
 									}
 								}}
 							>
-								<mdi-icon name=${icon}></mdi-icon>
-								<mdi-icon name="trash"></mdi-icon>
+								<c-icon name=${icon} />
+								<c-icon name="trash" />
 							</button>
 						</li>
 					`
@@ -41,7 +40,7 @@ create('tasks', {
 			<div part="card">
 				<input
 					part="text-input"
-					placeholder=${placeholder}
+					placeholder=${await t('What do you need to do?')}
 					@keydown=${({ key, target }) => {
 						if (key === 'Enter') {
 							addRecord({
@@ -77,7 +76,7 @@ create('tasks', {
 			gap: 0.5rem;
 			justify-content: space-between;
 		}
-		mdi-icon {
+		c-icon {
 			color: var(--grey-400);
 			pointer-events: none;
 		}

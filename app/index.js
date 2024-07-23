@@ -1,6 +1,6 @@
-import { getRecords } from '../api.js'
-import quotes from '../data/quotes.js'
-import { t } from '../i18n.js'
+import { getRecords } from './api.js'
+import './components/_.js'
+import quotes from './data/quotes.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const [
@@ -34,49 +34,47 @@ create('app', {
 		return html`
 			<nav>
 				<button @click=${() => (this.page = 'home')}>
-					<mdi-icon name="user"></mdi-icon>
-					${await t('My Day')}
+					<c-icon name="user" />
+					<c-t>My Day</c-t>
 				</button>
 				<button @click=${() => (this.page = 'friends')}>
-					<mdi-icon name="group"></mdi-icon>
-					${await t('Friends')}
+					<c-icon name="group" />
+					<c-t>Friends</c-t>
 				</button>
 				<button @click=${() => (this.page = 'settings')}>
-					<mdi-icon name="cog"></mdi-icon>
-					${await t('Settings')}
+					<c-icon name="cog" />
+					<c-t>Settings</c-t>
 				</button>
 			</nav>
 			<main>
 				${page === 'home'
 					? html`
-							<h1>${await t(`Good ${timeOfDay}, ${Name}`)}</h1>
-							<p>${await t(quote)} - ${author}</p>
+							<h1><c-t>Good ${timeOfDay}, ${Name}</c-t></h1>
+							<p><c-t>${quote}</c-t> - ${author}</p>
 							<header>
-								<h2>${await t('Habits')}</h2>
+								<h2><c-t>Habits</c-t></h2>
 								<button
 									@click=${() => {
 										this.record = ''
 										setTimeout(() => (this.page = 'edit-habit'))
 									}}
 								>
-									<mdi-icon name="plus"></mdi-icon>
+									<c-icon name="plus" />
 								</button>
 							</header>
-							<c-habit></c-habit>
+							<c-habits />
 							<header>
-								<h2>${await t('Tasks')}</h2>
+								<h2><c-t>Tasks</c-t></h2>
 							</header>
-							<c-tasks></c-tasks>
+							<c-tasks />
 							<header>
-								<h2>${await t('Gratitude')}</h2>
+								<h2><c-t>Gratitude</c-t></h2>
 							</header>
-							<c-gratitude></c-gratitude>
+							<c-gratitude />
 					  `
 					: ''}
-				${page === 'edit-habit'
-					? html`<edit-habit record=${record}></edit-habit>`
-					: ''}
-				${page === 'settings' ? html`<h1>${await t('Settings')}</h1>` : ''}
+				${page === 'edit-habit' ? html`<edit-habit record=${record} />` : ''}
+				${page === 'settings' ? html`<h1><c-t>Settings</c-t></h1>` : ''}
 			</main>
 		`
 	},
@@ -86,7 +84,6 @@ create('app', {
 			filter: drop-shadow(1px 1px 1px black);
 			padding: 0.5rem;
 		}
-
 		nav button {
 			align-items: center;
 			background: transparent;
@@ -98,49 +95,40 @@ create('app', {
 			padding: 0.5rem;
 			text-decoration: none;
 		}
-
 		nav button:first-of-type {
 			margin-right: auto;
 		}
-
 		nav button:hover,
 		header button:hover {
 			background: #0008;
 			border-radius: 3rem;
 		}
-
 		main {
 			max-width: 70ch;
 			margin: 0 auto;
 			padding: 2rem 1rem 4rem;
 		}
-
 		h1 {
 			margin: 1rem 0;
 		}
-
 		h2 {
 			margin: 0;
 		}
-
 		p {
 			line-height: 1.75;
 		}
-
 		header {
 			align-items: center;
 			display: flex;
 			justify-content: space-between;
 			margin: 3rem 0 1rem;
 		}
-
 		header button {
 			background: transparent;
 			border: none;
 			cursor: pointer;
 			padding: 0.25rem;
 		}
-
 		*::part(card) {
 			backdrop-filter: blur(5px);
 			background: #000b;
@@ -149,7 +137,6 @@ create('app', {
 			gap: 0.5rem;
 			padding: 0.5rem;
 		}
-
 		*::part(button) {
 			background: transparent;
 			border: none;
@@ -157,11 +144,9 @@ create('app', {
 			cursor: pointer;
 			padding: 0.5rem;
 		}
-
 		*::part(button):hover {
 			background: var(--soft-bg);
 		}
-
 		*::part(text-input) {
 			background: transparent;
 			border-radius: var(--card-child-radius, 0.5rem);
@@ -171,16 +156,13 @@ create('app', {
 			margin: 0.5rem;
 			padding: 0.5rem;
 		}
-
 		*::part(text-input)::placeholder {
 			color: var(--grey-400);
 		}
-
 		*::part(text-input):hover,
 		*::part(text-input):focus {
 			background: var(--soft-bg);
 		}
-
 		*::part(text-input):focus-visible {
 			outline: 2px solid white;
 		}

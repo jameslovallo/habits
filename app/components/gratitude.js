@@ -1,9 +1,8 @@
 import { addRecord, date, deleteRecord, getRecords } from '../api.js'
-import { t } from '../i18n.js'
+import { t } from './translate.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Gratitude'
-const placeholder = await t('What are you grateful for?')
 
 const getList = async () => {
 	const records = await getRecords({ table })
@@ -23,7 +22,7 @@ create('gratitude', {
 			<div part="card">
 				<input
 					part="text-input"
-					placeholder=${placeholder}
+					placeholder=${await t('What are you grateful for?')}
 					@keydown=${({ key, target }) => {
 						if (key === 'Enter') {
 							addRecord({
@@ -55,7 +54,7 @@ create('gratitude', {
 												callback: () => this.connectedCallback(),
 											})}
 									>
-										<mdi-icon name="trash"></mdi-icon>
+										<c-icon name="trash" />
 									</button>
 								</li>
 							`
@@ -82,7 +81,7 @@ create('gratitude', {
 		[part='button'] {
 			color: var(--red-300);
 		}
-		mdi-icon {
+		c-icon {
 			pointer-events: none;
 		}
 	`,

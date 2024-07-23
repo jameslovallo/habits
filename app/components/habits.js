@@ -1,9 +1,7 @@
 import { date, getRecords, updateRecord } from '../api.js'
-import { t } from '../i18n.js'
 import { create, css, html } from '//unpkg.com/cuick-dev'
 
 const table = 'Habits'
-const today = await t('Today')
 
 const getList = async () => {
 	const records = await getRecords({ table })
@@ -17,7 +15,7 @@ const getList = async () => {
 	return records
 }
 
-create('habit', {
+create('habits', {
 	_app: 'c-app',
 	async template({ _app }) {
 		const habits = await getList()
@@ -59,7 +57,7 @@ create('habit', {
 											}}
 										>
 											${Name}
-											<small>${today}: ${DoneToday}/${NumPerDay}</small>
+											<small><c-t>Today</c-t>: ${DoneToday}/${NumPerDay}</small>
 										</button>
 									</div>
 									<button
@@ -75,7 +73,7 @@ create('habit', {
 											})
 										}}
 									>
-										<mdi-icon name=${icon}></mdi-icon>
+										<c-icon name=${icon} />
 									</button>
 								</li>
 							`
@@ -136,7 +134,7 @@ create('habit', {
 		[part='action']:hover {
 			background: var(--soft-bg);
 		}
-		mdi-icon {
+		c-icon {
 			color: var(--grey-400);
 			pointer-events: none;
 		}

@@ -17,7 +17,7 @@ body {
 	--yellow-300: #ffb74d;
 	color-scheme: dark;
 	background: linear-gradient(-45deg, #0008, #0000),
-		url('/src/images/kaleidohope.min.jpeg') no-repeat center center / cover;
+		url('/app/images/kaleidohope.min.jpeg') no-repeat center center / cover;
 	background-attachment: fixed;
 	font-family: sans-serif;
 }
