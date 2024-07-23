@@ -20,9 +20,9 @@ if (timeOfDay < 12) {
 }
 
 const getRandom = (min, max) => {
-	const minCeiled = Math.ceil(min)
-	const maxFloored = Math.floor(max)
-	return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled)
+	min = Math.ceil(min)
+	max = Math.floor(max)
+	return Math.floor(Math.random() * (max - min) + min)
 }
 
 const { quote, author } = quotes[getRandom(0, quotes.length - 1)]
