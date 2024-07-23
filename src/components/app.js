@@ -28,90 +28,55 @@ const getRandom = (min, max) => {
 const { quote, author } = quotes[getRandom(0, quotes.length - 1)]
 
 create('app', {
-	$page: 'home',
+	page: 'home',
 	record: '',
-	setup({ shadowRoot, $page }) {
-		this.changePage = (page) => {
-			const main = shadowRoot.querySelector('main')
-			const pages = [...shadowRoot.querySelectorAll('[data-page]')]
-			const currentPage = pages.find((el) => el.dataset.page === $page.v)
-			const newPage = pages.find((el) => el.dataset.page === page)
-			pages.forEach((page) => {
-				if (page === currentPage || page === newPage) {
-					page.style.display = 'block'
-				} else {
-					page.style.display = 'none'
-					page.inert = true
-				}
-			})
-			main.scrollTo({ top: 0, left: newPage.offsetLeft, behavior: 'smooth' })
-			newPage.inert = false
-			$page.v = page
-		}
-	},
-	async template({ changePage, record }) {
+	async template({ record, page }) {
 		return html`
 			<nav>
-				<a
-					@click=${(e) => {
-						e.preventDefault()
-						this.record = ''
-						changePage('home')
-					}}
-				>
+				<button @click=${() => (this.page = 'home')}>
 					<mdi-icon name="user"></mdi-icon>
 					${await t('My Day')}
-				</a>
-				<a
-					@click=${(e) => {
-						e.preventDefault()
-						changePage('friends')
-					}}
-				>
+				</button>
+				<button @click=${() => (this.page = 'friends')}>
 					<mdi-icon name="group"></mdi-icon>
 					${await t('Friends')}
-				</a>
-				<a
-					@click=${(e) => {
-						e.preventDefault()
-						changePage('settings')
-					}}
-				>
+				</button>
+				<button @click=${() => (this.page = 'settings')}>
 					<mdi-icon name="cog"></mdi-icon>
 					${await t('Settings')}
-				</a>
+				</button>
 			</nav>
 			<main>
-				<div data-page="home">
-					<h1>${await t(`Good ${timeOfDay}, ${Name}`)}</h1>
-					<p>${await t(quote)} - ${author}</p>
-					<header>
-						<h2>${await t('Habits')}</h2>
-						<button
-							@click=${() => {
-								this.record = ''
-								setTimeout(() => changePage('edit-habit'))
-							}}
-						>
-							<mdi-icon name="plus"></mdi-icon>
-						</button>
-					</header>
-					<c-habit></c-habit>
-					<header>
-						<h2>${await t('Tasks')}</h2>
-					</header>
-					<c-tasks></c-tasks>
-					<header>
-						<h2>${await t('Gratitude')}</h2>
-					</header>
-					<c-gratitude></c-gratitude>
-				</div>
-				<div data-page="edit-habit">
-					<edit-habit record=${record}></edit-habit>
-				</div>
-				<div data-page="settings">
-					<h1>${await t('Settings')}</h1>
-				</div>
+				${page === 'home'
+					? html`
+							<h1>${await t(`Good ${timeOfDay}, ${Name}`)}</h1>
+							<p>${await t(quote)} - ${author}</p>
+							<header>
+								<h2>${await t('Habits')}</h2>
+								<button
+									@click=${() => {
+										this.record = ''
+										this.page = 'edit-habit'
+									}}
+								>
+									<mdi-icon name="plus"></mdi-icon>
+								</button>
+							</header>
+							<c-habit></c-habit>
+							<header>
+								<h2>${await t('Tasks')}</h2>
+							</header>
+							<c-tasks></c-tasks>
+							<header>
+								<h2>${await t('Gratitude')}</h2>
+							</header>
+							<c-gratitude></c-gratitude>
+					  `
+					: ''}
+				${page === 'edit-habit'
+					? html`<edit-habit record=${record}></edit-habit>`
+					: ''}
+				${page === 'settings' ? html`<h1>${await t('Settings')}</h1>` : ''}
 			</main>
 		`
 	},
@@ -122,8 +87,10 @@ create('app', {
 			padding: 0.5rem;
 		}
 
-		nav a {
+		nav button {
 			align-items: center;
+			background: transparent;
+			border: none;
 			color: inherit;
 			cursor: pointer;
 			display: flex;
@@ -132,30 +99,24 @@ create('app', {
 			text-decoration: none;
 		}
 
-		nav a:first-of-type {
+		nav button:first-of-type {
 			margin-right: auto;
 		}
 
-		nav a:hover,
+		nav button:hover,
 		header button:hover {
 			background: #0008;
 			border-radius: 3rem;
 		}
 
 		main {
-			display: flex;
-			scroll-snap-type: x mandatory;
-			overflow-x: hidden;
-		}
-
-		main > div {
-			min-width: 100%;
-			padding: 0 max(calc((100vw - 70ch) / 2), 1rem);
-			scroll-snap-align: start;
+			max-width: 70ch;
+			margin: 0 auto;
+			padding: 2rem 1rem 4rem;
 		}
 
 		h1 {
-			margin: 3rem 0 1rem;
+			margin: 1rem 0;
 		}
 
 		h2 {
