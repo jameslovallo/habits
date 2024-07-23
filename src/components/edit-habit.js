@@ -17,7 +17,7 @@ create('edit-habit', {
 		}
 		const { id, Name, Icon, Link, NumPerDay } = this.habit
 		const callback = () => {
-			_app.changePage('home')
+			_app.page = 'home'
 			_app.record = ''
 		}
 		return html`
