@@ -14,22 +14,24 @@ create('edit-habit', {
 			const habits = await getRecords({ table, record })
 			this.habit = habits.find((x) => x.id === record).fields
 		}
-		const { id, Name, Icon, Link, NumPerDay } = this.habit
+		const { Name, Icon, Link, NumPerDay } = this.habit
 		const callback = () => {
 			_app.page = 'home'
 			_app.record = ''
 		}
 		return html`
-			<h1><c-t>${id ? 'Edit Habit' : 'Add Habit'}</c-t></h1>
+			<h1><c-t>${record ? 'Edit Habit' : 'Add Habit'}</c-t></h1>
 			<div part="card">
 				<form
 					@submit=${(e) => {
 						e.preventDefault()
 						const fields = Object.fromEntries(new FormData(e.target).entries())
 						fields.NumPerDay = Number(fields.NumPerDay)
-						id && fields.Name
-							? updateRecord({ table, id, fields, callback })
-							: addRecord({ table, fields, callback })
+						if (fields.Name) {
+							record
+								? updateRecord({ table, id: record, fields, callback })
+								: addRecord({ table, fields, callback })
+						}
 					}}
 				>
 					<label>
