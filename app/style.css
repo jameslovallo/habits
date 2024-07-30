@@ -16,10 +16,24 @@ body {
 	--red-300: #e57373;
 	--yellow-300: #ffb74d;
 	color-scheme: dark;
-	background: linear-gradient(-45deg, #0008, #0000),
-		url('/app/images/kaleidohope.min.jpeg') no-repeat center center / cover;
-	background-attachment: fixed;
 	font-family: sans-serif;
+}
+
+:root:after {
+	background-image: url('/app/images/kaleidohope.min.jpeg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	content: '';
+	display: block;
+	height: 100%;
+	left: 0;
+	opacity: 0.66;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: -1;
 }
 
 body {
